@@ -76,6 +76,8 @@ if __name__ == "__main__":
 
     if args.scancode_output and args.scanned_files:
         report = analyze_file(args.scancode_output, args.scanned_files)
-        print(report)
+        if report:
+            print(report)
+            sys.exit(1)
     else:
         sys.exit("Provide files to analyze")

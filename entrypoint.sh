@@ -3,7 +3,6 @@
 mkdir -p scan
 git rebase origin/master
 for f in `git  diff --name-only --diff-filter=A origin/master..`; do cp --parents  $f scan; done
-ls -la scan/
 
 mkdir -p /github/workspace/artifacts
 
@@ -17,3 +16,6 @@ cd /scancode-toolkit
 	--processes `expr $(nproc --all) - 1` \
 	--json /github/workspace/artifacts/scancode.json \
 	--html /github/workspace/artifacts/scancode.html
+
+
+python /license_check.py -s /github/workspace/artifacts/scancode.json  -f /github/workspace/$1
