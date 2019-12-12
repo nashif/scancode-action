@@ -1,5 +1,10 @@
 #!/bin/sh -l
 
+mkdir -p scan
+git rebase origin/master
+for f in `git  diff --name-only --diff-filter=A origin/master..`; do cp --parents  $f scan; done
+ls -la scan/
+
 cd /scancode-toolkit
 ./scancode \
 	-clipeu \
