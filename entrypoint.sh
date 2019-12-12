@@ -5,6 +5,8 @@ git rebase origin/master
 for f in `git  diff --name-only --diff-filter=A origin/master..`; do cp --parents  $f scan; done
 ls -la scan/
 
+mkdir -p /github/workspace/artifacts
+
 cd /scancode-toolkit
 ./scancode \
 	-clipeu \
@@ -13,5 +15,5 @@ cd /scancode-toolkit
 	--summary \
 	--verbose /github/workspace/$1 \
 	--processes `expr $(nproc --all) - 1` \
-	--json /github/workspace/scancode.json \
-	--html /github/workspace/scancode.html
+	--json /github/workspace/artifacts/scancode.json \
+	--html /github/workspace/artifacts/scancode.html
