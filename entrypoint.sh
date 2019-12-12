@@ -1,6 +1,9 @@
 #!/bin/sh -l
 
-cd scancode-toolkit
+pwd
+ls -la
+ls -la $HOME/
+
 ./scancode \
 	-clipeu \
 	--license-diag \
