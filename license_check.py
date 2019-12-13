@@ -39,7 +39,7 @@ def analyze_file(config_file, scancode_file, scanned_files_dir):
             kconfig = "Kconfig" in orig_path and file_type in ['ASCII text']
             check = False
 
-            if file.get("extension") in never_check_ext:
+            if file.get("extension")[1:] in never_check_ext:
                 check = False
             elif file.get("programming_language") in never_check_langs:
                 check = False
