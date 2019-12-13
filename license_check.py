@@ -10,7 +10,7 @@ import json
 def analyze_file(scancode_file, scanned_files_dir):
 
     report = ""
-    never_check_ext =  ['.yaml', '.html', '.rst', '.conf', '.cfg']
+    never_check_ext =  ['.yml', '.yaml', '.html', '.rst', '.conf', '.cfg']
     never_check_langs = ['HTML']
     check_langs = ['CMake']
     with open(scancode_file, 'r') as json_fp:
