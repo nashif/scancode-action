@@ -6,12 +6,26 @@
 import argparse
 import sys
 import json
+import yaml
 
-def analyze_file(scancode_file, scanned_files_dir):
+def analyze_file(config_file, scancode_file, scanned_files_dir):
+
+    with open(config_file, 'r') as f:
+        config = yaml.safe_load(f.read())
 
     report = ""
-    never_check_ext =  ['.yml', '.yaml', '.html', '.rst', '.conf', '.cfg']
-    never_check_langs = ['HTML']
+    exclude = config.get("exclude")
+    if exclude:
+        never_check_ext =  exclude.get("extensions", [])
+        never_check_langs = exclude.get("langs", [])
+    else:
+        never_check_ext = []
+        never_check_langs = []
+
+    lic = config.get("license")
+    lic_main = lic.get("main")
+    lic_cat = lic.get("category")
+
     check_langs = ['CMake']
     with open(scancode_file, 'r') as json_fp:
         scancode_results = json.load(json_fp)
@@ -43,10 +57,10 @@ def analyze_file(scancode_file, scanned_files_dir):
                     report += ("* {} missing license.\n".format(orig_path))
                 else:
                     for lic in licenses:
-                        if lic['key'] != "apache-2.0":
+                        if lic['key'] != lic_main:
                             report += ("* {} is not apache-2.0 licensed: {}\n".format(
                                 orig_path, lic['key']))
-                        if lic['category'] != 'Permissive':
+                        if lic['category'] != lic_cat:
                             report += ("* {} has non-permissive license: {}\n".format(
                                 orig_path, lic['key']))
                         if lic['key'] == 'unknown-spdx':
@@ -67,6 +81,8 @@ def parse_args():
                         help='''JSON output from scancode-toolkit''')
     parser.add_argument('-f', '--scanned-files',
                         help="Directory with scanned files")
+    parser.add_argument('-c', '--config-file',
+                        help="Configuration file")
     parser.add_argument('-o', '--output-file',
                         help="Output report file")
     return parser.parse_args()
@@ -76,8 +92,8 @@ if __name__ == "__main__":
     args = parse_args()
 
 
-    if args.scancode_output and args.scanned_files:
-        report = analyze_file(args.scancode_output, args.scanned_files)
+    if args.scancode_output and args.scanned_files and args.config_file:
+        report = analyze_file(args.config_file, args.scancode_output, args.scanned_files)
         if report:
             with open(args.output_file, "w") as fp:
                 fp.write(report)
