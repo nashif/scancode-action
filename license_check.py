@@ -22,9 +22,9 @@ def analyze_file(config_file, scancode_file, scanned_files_dir):
         never_check_ext = []
         never_check_langs = []
 
-    lic = config.get("license")
-    lic_main = lic.get("main")
-    lic_cat = lic.get("category")
+    lic_config = config.get("license")
+    lic_main = lic_config.get("main")
+    lic_cat = lic_config.get("category")
 
     check_langs = ['CMake']
     with open(scancode_file, 'r') as json_fp:
@@ -58,7 +58,7 @@ def analyze_file(config_file, scancode_file, scanned_files_dir):
                 else:
                     for lic in licenses:
                         if lic['key'] != lic_main:
-                            report += ("* {} is not apache-2.0 licensed: {}\n".format(
+                            report += ("* {} is not {} licensed: {}\n".format(lic_main,
                                 orig_path, lic['key']))
                         if lic['category'] != lic_cat:
                             report += ("* {} has non-permissive license: {}\n".format(

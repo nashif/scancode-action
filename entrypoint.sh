@@ -1,14 +1,14 @@
 #!/bin/sh -l
 
+git config user.name "Automated Publisher"
+git config user.email "publish-to-github-action@users.noreply.github.com"
+
 mkdir -p ${1}
-#git rebase origin/master
-for f in `git  diff --name-only --diff-filter=A origin/master..`; do
+# git diff-tree --no-commit-id --name-only -r ${{ github.sha }}
+for f in `git  diff-tree --no-commit-id --name-only -r ${{ github.sha }}`; do
 	echo "found new file: $f";
 	cp --parents  $f ${1};
 done
-
-ls -la
-ls -la ${1}
 
 mkdir -p /github/workspace/artifacts
 
