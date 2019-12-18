@@ -1,8 +1,14 @@
 #!/bin/sh -l
 
-mkdir -p scan
-git rebase origin/master
-for f in `git  diff --name-only --diff-filter=A origin/master..`; do cp --parents  $f scan; done
+mkdir -p ${1}
+#git rebase origin/master
+for f in `git  diff --name-only --diff-filter=A origin/master..`; do
+	echo "found new file: $f";
+	cp --parents  $f ${1};
+done
+
+ls -la
+ls -la ${1}
 
 mkdir -p /github/workspace/artifacts
 
