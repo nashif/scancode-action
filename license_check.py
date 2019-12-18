@@ -58,8 +58,8 @@ def analyze_file(config_file, scancode_file, scanned_files_dir):
                 else:
                     for lic in licenses:
                         if lic['key'] != lic_main:
-                            report += ("* {} is not {} licensed: {}\n".format(lic_main,
-                                orig_path, lic['key']))
+                            report += ("* {} is not {} licensed: {}\n".format(
+                                orig_path, lic_main, lic['key']))
                         if lic['category'] != lic_cat:
                             report += ("* {} has non-permissive license: {}\n".format(
                                 orig_path, lic['key']))
