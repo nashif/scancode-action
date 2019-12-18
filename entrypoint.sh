@@ -5,7 +5,7 @@ git config user.email "publish-to-github-action@users.noreply.github.com"
 
 mkdir -p ${1}
 # git diff-tree --no-commit-id --name-only -r ${{ github.sha }}
-for f in `git  diff-tree --no-commit-id --name-only -r ${{ github.sha }}`; do
+for f in `git  diff --name-only --diff-filter=A origin/master..`; do
 	echo "found new file: $f";
 	cp --parents  $f ${1};
 done
